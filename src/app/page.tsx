@@ -32,16 +32,18 @@ export default function Home() {
           placeholder="미팅 이름을 지어주세요."
           className="w-full px-4 py-2 border-2 border-[#DADADA] rounded-xl placeholder:text-xs text-sm text-center focus:border-[#00B2FF] focus:outline-none"
         />
-        <Calendar
-          mode="multiple"
-          selected={days}
-          onSelect={setDays}
-          locale={ko}
-          formatters={{ formatCaption }}
-          className={`rounded-xl border-2 ${
-            days && days.length > 0 ? "border-[#00B2FF]" : "border-[#DADADA]"
-          }`}
-        />
+        <div className="relative w-screen mobile:w-full mt-10 justify-center items-center">
+          <Calendar
+            mode="multiple"
+            selected={days}
+            onSelect={setDays}
+            locale={ko}
+            formatters={{ formatCaption }}
+            className={`rounded-xl border-2 ${
+              days && days.length > 0 ? "border-[#00B2FF]" : "border-[#DADADA]"
+            }`}
+          />
+        </div>
       </div>
 
       <div>s</div>

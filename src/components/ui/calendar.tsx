@@ -5,7 +5,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -18,24 +17,24 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("py-3 px-4 w-full", className)}
+      className={cn("p-3 w-screen mobile:w-full", className)}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
         caption:
-          "flex justify-center pt-1 relative items-center text-[#979797]",
+          "flex justify-center pb-4 items-center text-[#979797] z-30 absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full w-full",
         caption_label: "text-sm font-medium",
         nav: "space-x-1 flex items-center",
         nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
-        nav_button_previous: "absolute left-2",
-        nav_button_next: "absolute right-0",
+        nav_button_previous: "absolute left-5",
+        nav_button_next: "absolute right-3",
         table: "w-full border-collapse space-y-1",
-        head_row: "flex justify-between w-full mt-1 px-1",
+        head_row: "flex justify-center gap-2",
         head_cell:
-          "text-muted-foreground w-6 rounded-md font-normal text-[0.8rem]",
-        row: "flex w-full gap-2 mt-2 justify-between px-1",
-        cell: "h-6 w-6 w-full text-center text-sm p-0 relative text-[#979797] focus-within:relative focus-within:z-20",
-        day: "h-6 w-6 p-0 font-normal aria-selected:opacity-100 rounded-full hover:rounded-full",
+          "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
+        row: "flex w-full mt-2 gap-2 justify-center",
+        cell: "h-8 w-8 text-center text-sm p-0 relative text-[#979797] focus-within:relative focus-within:z-20",
+        day: "h-8 w-8 p-0 font-normal aria-selected:opacity-100 rounded-full hover:rounded-full hover:bg-[#77d3fb]",
         day_range_end: "day-range-end",
         day_selected: "rounded-full bg-[#00B2FF] text-white",
         day_today: "text-[#00B2FF]",
