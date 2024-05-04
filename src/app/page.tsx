@@ -3,7 +3,7 @@ import Logo from "@/assets/logo.svg";
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { ko } from "date-fns/locale";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { DateFormatter } from "react-day-picker";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SelectContents } from "@/components";
@@ -14,13 +14,21 @@ export default function Home() {
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
 
+  const isCompleteSetting =
+    title &&
+    days &&
+    days.length > 0 &&
+    startTime &&
+    endTime &&
+    Number(startTime) < Number(endTime);
+
   const formatCaption: DateFormatter = (month, options) => {
     return <>{format(month, "LLLL", { locale: options?.locale })}</>;
   };
 
   return (
     <main className="flex w-full h-dvh flex-col items-center justify-center px-10 py-12 gap-6">
-      <i className="flex justify-center items-center w-full py-8">
+      <i className="flex justify-center items-center w-full mb-8">
         <Logo />
       </i>
       <div className="flex flex-col gap-6 w-full items-center">
@@ -69,9 +77,15 @@ export default function Home() {
           </Select>
           <p>시</p>
         </div>
+        <button
+          className={`w-full py-3 rounded-xl mt-8 ${
+            isCompleteSetting ? "bg-blue text-white" : "bg-[#F0F0F0]"
+          }`}
+          disabled={!isCompleteSetting}
+        >
+          미팅 만들기
+        </button>
       </div>
-
-      <div>s</div>
     </main>
   );
 }
