@@ -25,7 +25,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex w-full h-full flex-col items-center justify-center px-10 py-12">
+    <main className="flex w-full h-dvh flex-col items-center justify-center px-10 py-12 gap-6">
       <i className="flex justify-center items-center w-full py-8">
         <Logo />
       </i>
