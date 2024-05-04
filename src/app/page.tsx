@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { DateFormatter } from "react-day-picker";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SelectContents } from "@/components";
+import Link from "next/link";
 
 export default function Home() {
   const [title, setTitle] = useState<string>("");
@@ -27,7 +28,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex w-full h-dvh flex-col items-center justify-center px-10 py-12 gap-8 mobile:gap-16 tablet:mx-auto tablet:max-w-[400px]">
+    <main className="flex w-full h-full flex-col items-center justify-center gap-8 mobile:gap-16">
       <i className="flex justify-center items-center w-full">
         <Logo />
       </i>
@@ -66,7 +67,7 @@ export default function Home() {
             </SelectTrigger>
             <SelectContents type="start" />
           </Select>
-          <p className="mr-4">시 부터</p>
+          <p className="mobile:mr-4">시 부터</p>
           <Select onValueChange={(selectedTime) => setEndTime(selectedTime)}>
             <SelectTrigger
               className={`${endTime ? "bg-blue text-white" : "bg-[#F0F0F0]"}`}
@@ -78,14 +79,16 @@ export default function Home() {
           <p>시</p>
         </div>
       </div>
-      <button
-        className={`w-full py-3 rounded-xl text-sm mobile:text-base ${
-          isCompleteSetting ? "bg-blue text-white" : "bg-[#F0F0F0]"
-        }`}
-        disabled={!isCompleteSetting}
-      >
-        미팅 만들기
-      </button>
+      <Link href="/meet" className="w-full">
+        <button
+          className={`w-full py-3 rounded-xl text-sm mobile:text-base ${
+            isCompleteSetting ? "bg-blue text-white" : "bg-[#F0F0F0]"
+          }`}
+          disabled={!isCompleteSetting}
+        >
+          미팅 만들기
+        </button>
+      </Link>
     </main>
   );
 }
