@@ -27,11 +27,11 @@ export default function Home() {
   };
 
   return (
-    <main className="flex w-full h-dvh flex-col items-center justify-center px-10 py-12 gap-6">
-      <i className="flex justify-center items-center w-full mb-8">
+    <main className="flex w-full h-dvh flex-col items-center justify-center px-10 py-12 gap-8 mobile:gap-16 tablet:mx-auto tablet:max-w-[400px]">
+      <i className="flex justify-center items-center w-full">
         <Logo />
       </i>
-      <div className="flex flex-col gap-6 w-full items-center">
+      <div className="flex flex-col gap-6 w-screen items-center xs:w-full">
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -41,7 +41,7 @@ export default function Home() {
             title ? "text-blue border-blue bg-[#ECF9FF]" : "border-gray"
           }`}
         />
-        <div className="relative w-screen mobile:w-full mt-10 justify-center items-center">
+        <div className="relative w-full mt-10 justify-center items-center">
           <Calendar
             mode="multiple"
             selected={days}
@@ -54,7 +54,7 @@ export default function Home() {
           />
         </div>
         <div
-          className={`w-full flex justify-center items-center gap-2 border-2 py-3 rounded-xl ${
+          className={`w-full flex justify-center items-center gap-2 border-2 py-3 rounded-xl text-sm mobile:text-base ${
             startTime && endTime ? "border-blue text-blue" : "border-gray"
           }`}
         >
@@ -77,15 +77,15 @@ export default function Home() {
           </Select>
           <p>시</p>
         </div>
-        <button
-          className={`w-full py-3 rounded-xl mt-8 ${
-            isCompleteSetting ? "bg-blue text-white" : "bg-[#F0F0F0]"
-          }`}
-          disabled={!isCompleteSetting}
-        >
-          미팅 만들기
-        </button>
       </div>
+      <button
+        className={`w-full py-3 rounded-xl text-sm mobile:text-base ${
+          isCompleteSetting ? "bg-blue text-white" : "bg-[#F0F0F0]"
+        }`}
+        disabled={!isCompleteSetting}
+      >
+        미팅 만들기
+      </button>
     </main>
   );
 }
