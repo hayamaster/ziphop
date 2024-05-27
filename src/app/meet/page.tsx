@@ -1,25 +1,42 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/apis";
 
-export default function Page() {
-  const [data, setData] = useState<any[]>([]);
-  const fetchData = useCallback(async () => {
-    const { data, error } = await supabase.from("pages").select("*");
+interface PageData {
+  title: string;
+  created_at: string;
+  days: string[];
+  startTime: string;
+  endTime: string;
+  pageId: string;
+}
 
-    if (error) {
-      console.error("Error fetching data:", error);
-    } else {
-      setData(data);
-    }
-  }, []);
+const testId = "506f47d7-cb0e-4d9b-931d-63fbebcd5533";
+
+export default function Page() {
+  const [data, setData] = useState<PageData>();
 
   useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase
+        .from("pages")
+        .select("*")
+        .eq("pageId", testId)
+        .single();
+
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        setData(data);
+        console.log(data);
+      }
+    };
     fetchData();
-  }, [fetchData]);
+  }, []);
 
   return (
     <main>
+      <h1>{data?.title}</h1>
       <div>Page</div>
       <div>siv</div>
     </main>
