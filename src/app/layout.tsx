@@ -15,9 +15,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <main className="flex w-full h-dvh items-center justify-center px-10 py-12 tablet:mx-auto tablet:max-w-[400px]">
+    <html lang="en" className="w-full h-dvh overflow-hidden">
+      <body className={`${inter.className} w-full h-full`}>
+        <main className="flex w-full h-full items-center justify-center px-10 tablet:mx-auto tablet:max-w-[400px]">
           {children}
         </main>
       </body>

@@ -28,8 +28,8 @@ export default function Home() {
   };
 
   return (
-    <main className="flex w-full h-full flex-col items-center justify-center gap-8 mobile:gap-16">
-      <i className="flex justify-center items-center w-full">
+    <main className="flex w-full h-full flex-col items-center overflow-y-scroll justify-around">
+      <i className="flex justify-center items-center w-full grow-0">
         <Logo />
       </i>
       <div className="flex flex-col gap-6 w-screen items-center xs:w-full">
