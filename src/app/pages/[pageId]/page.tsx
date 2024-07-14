@@ -2,6 +2,7 @@
 // import { useState, useEffect } from "react";
 import { supabase } from "@/apis";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ShareIcon } from "@/assets";
 
 interface Data {
   title: string;
@@ -39,23 +40,33 @@ export default async function Page({ params }: { params: { pageId: string } }) {
           <div className="w-full h-full flex relative">
             <TabsTrigger
               value="account"
-              className="absolute left-0 w-[50.8%] m-0 py-2.5 text-gray-200 data-[state=active]:text-blue data-[state=active]:z-20 rounded-t-xl shadow-[0_-1.5px_3px_0px_rgba(0,0,0,0.05)] data-[state=active]:shadow-[3px_-4px_6px_-1px_rgba(0,0,0,0.15)]"
+              className="absolute left-0 w-[50.8%] m-0 py-2.5 text-gray-200 rounded-t-xl shadow-[0_-1.5px_3px_0px_rgba(0,0,0,0.05)] data-[state=active]:text-blue data-[state=active]:z-20 data-[state=active]:shadow-[3px_-4px_6px_-1px_rgba(0,0,0,0.15)]"
             >
-              <h1 className="">미팅 전체보기</h1>
+              <h1 className="text-base">미팅 전체보기</h1>
             </TabsTrigger>
             <TabsTrigger
               value="password"
-              className="absolute right-0 w-[50.8%] m-0 py-2.5 text-gray-200 data-[state=active]:text-blue data-[state=active]:z-20 rounded-t-xl shadow-[0_-1.5px_3px_0px_rgba(0,0,0,0.05)] data-[state=active]:shadow-[-3px_-4px_6px_-1px_rgba(0,0,0,0.15)]"
+              className="absolute right-0 w-[50.8%] m-0 py-2.5 text-gray-200 rounded-t-xl shadow-[0_-1.5px_3px_0px_rgba(0,0,0,0.05)] data-[state=active]:text-blue data-[state=active]:z-20 data-[state=active]:shadow-[-3px_-4px_6px_-1px_rgba(0,0,0,0.15)]"
             >
-              <h1 className="">겹치는 시간 확인</h1>
+              <h1 className="text-base">겹치는 시간 확인</h1>
             </TabsTrigger>
           </div>
         </TabsList>
-        <TabsContent value="account">
-          <h1>{data?.title}</h1>
+        <TabsContent value="account" className="w-full h-full px-10 py-10">
+          <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className="w-full flex justify-between items-center px-4">
+              <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
+              <ShareIcon className="w-6 h-6" />
+            </div>
+          </div>
         </TabsContent>
-        <TabsContent value="password">
-          <h1>{data?.title}</h1>
+        <TabsContent value="password" className="w-full h-full px-10 py-10">
+          <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className="w-full flex justify-between items-center px-4">
+              <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
+              <ShareIcon className="w-6 h-6" />
+            </div>
+          </div>
         </TabsContent>
       </Tabs>
 
