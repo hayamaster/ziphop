@@ -7,7 +7,37 @@ import { format } from "date-fns";
 import { DateFormatter } from "react-day-picker";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SelectContents } from "@/components";
-import Link from "next/link";
+import { supabase } from "@/apis";
+// import Link from "next/link";
+
+interface Data {
+  title: string;
+  created_at?: string;
+  days: string[] | undefined;
+  startTime: string;
+  endTime: string;
+  pageId?: string;
+}
+
+async function postData({ title, days, startTime, endTime }: Data) {
+  const { data, error } = await supabase
+    .from("pages")
+    .insert([
+      {
+        title: title,
+        days: days,
+        startTime: startTime,
+        endTime: endTime,
+      },
+    ])
+    .select();
+
+  if (error) {
+    console.log("Failed to post data");
+  }
+
+  return data;
+}
 
 export default function Home() {
   const [title, setTitle] = useState<string>("");
@@ -25,6 +55,16 @@ export default function Home() {
 
   const formatCaption: DateFormatter = (month, options) => {
     return <>{format(month, "LLLL", { locale: options?.locale })}</>;
+  };
+
+  const handleCreateMeeting = async () => {
+    const data = await postData({
+      title,
+      days: days?.map((day) => day.toISOString()),
+      startTime,
+      endTime,
+    });
+    console.log("pageId", data?.[0].pageId);
   };
 
   return (
@@ -79,16 +119,17 @@ export default function Home() {
           <p>시</p>
         </div>
       </div>
-      <Link href="/meet" className="w-full">
-        <button
-          className={`w-full py-3 rounded-xl text-sm mobile:text-base ${
-            isCompleteSetting ? "bg-blue text-white" : "bg-[#F0F0F0]"
-          }`}
-          disabled={!isCompleteSetting}
-        >
-          미팅 만들기
-        </button>
-      </Link>
+      {/* <Link href="/meet" className="w-full"> */}
+      <button
+        className={`w-full py-3 rounded-xl text-sm mobile:text-base ${
+          isCompleteSetting ? "bg-blue text-white" : "bg-[#F0F0F0]"
+        }`}
+        disabled={!isCompleteSetting}
+        onClick={handleCreateMeeting}
+      >
+        미팅 만들기
+      </button>
+      {/* </Link> */}
     </main>
   );
 }
