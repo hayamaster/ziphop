@@ -3,6 +3,7 @@
 import { supabase } from "@/apis";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShareIcon } from "@/assets";
+import { groupDaysByMonth } from "@/utils";
 
 interface Data {
   title: string;
@@ -32,6 +33,8 @@ async function getData(pageId: string): Promise<Data | null> {
 export default async function Page({ params }: { params: { pageId: string } }) {
   const data = await getData(params.pageId);
   console.log(data);
+  const dates = groupDaysByMonth(data?.days || []);
+  console.log(dates);
 
   return (
     <main className="h-full flex flex-col">
