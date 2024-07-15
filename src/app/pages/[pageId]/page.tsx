@@ -4,6 +4,13 @@ import { supabase } from "@/apis";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShareIcon } from "@/assets";
 import { groupDaysByMonth } from "@/utils";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface Data {
   title: string;
@@ -56,11 +63,59 @@ export default async function Page({ params }: { params: { pageId: string } }) {
           </div>
         </TabsList>
         <TabsContent value="account" className="w-full h-full px-10 py-10">
-          <div className="w-full h-full flex flex-col justify-center items-center">
+          <div className="w-full h-full flex flex-col justify-center items-center gap-4">
             <div className="w-full flex justify-between items-center px-4">
               <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
               <ShareIcon className="w-6 h-6" />
             </div>
+            <Carousel className="w-full max-w-xs relative">
+              <CarouselPrevious className="absolute top-3" />
+              <CarouselNext className="absolute top-3" />
+              <CarouselContent>
+                {Object.entries(dates).map(([month, value], index) => {
+                  value = value.sort((a, b) => a - b);
+
+                  return value.length > 5 ? (
+                    <>
+                      {Array.from(
+                        { length: Math.ceil(value.length / 5) },
+                        (_, i) => {
+                          const sliced = value.slice(i * 5, i * 5 + 5);
+
+                          return (
+                            <CarouselItem key={i}>
+                              <div className="p-1">
+                                <span className="text-4xl font-semibold">
+                                  {month}
+                                </span>
+                                <div className="flex gap-2">
+                                  {sliced.map((date, index) => (
+                                    <div key={index}>{date}</div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div>imsg</div>
+                            </CarouselItem>
+                          );
+                        }
+                      )}
+                    </>
+                  ) : (
+                    <CarouselItem key={index}>
+                      <div className="p-1">
+                        <span className="text-4xl font-semibold">{month}</span>
+                        <div className="flex gap-2">
+                          {value.map((date, index) => (
+                            <div key={index}>{date}</div>
+                          ))}
+                        </div>
+                      </div>
+                      <div>imsg</div>
+                    </CarouselItem>
+                  );
+                })}
+              </CarouselContent>
+            </Carousel>
           </div>
         </TabsContent>
         <TabsContent value="password" className="w-full h-full px-10 py-10">
