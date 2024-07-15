@@ -8,7 +8,7 @@ import { DateFormatter } from "react-day-picker";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SelectContents } from "@/components";
 import { supabase } from "@/apis";
-// import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Data {
   title: string;
@@ -45,6 +45,8 @@ export default function Home() {
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
 
+  const router = useRouter();
+
   const isCompleteSetting =
     title &&
     days &&
@@ -64,7 +66,10 @@ export default function Home() {
       startTime,
       endTime,
     });
-    console.log("pageId", data?.[0].pageId);
+
+    if (data) {
+      router.push(`/pages/${data[0].pageId}`);
+    }
   };
 
   return (
@@ -119,7 +124,6 @@ export default function Home() {
           <p>시</p>
         </div>
       </div>
-      {/* <Link href="/meet" className="w-full"> */}
       <button
         className={`w-full py-3 rounded-xl text-sm mobile:text-base ${
           isCompleteSetting ? "bg-blue text-white" : "bg-[#F0F0F0]"
@@ -129,7 +133,6 @@ export default function Home() {
       >
         미팅 만들기
       </button>
-      {/* </Link> */}
     </main>
   );
 }
