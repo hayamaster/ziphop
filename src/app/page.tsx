@@ -1,5 +1,5 @@
 "use client";
-import Logo from "@/assets/logo.svg";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { ko } from "date-fns/locale";
@@ -8,7 +8,7 @@ import { DateFormatter } from "react-day-picker";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SelectContents } from "@/components";
 import { supabase } from "@/apis";
-import { useRouter } from "next/navigation";
+import Logo from "@/assets/logo.svg";
 
 interface Data {
   title: string;
@@ -44,6 +44,7 @@ export default function Home() {
   const [days, setDays] = useState<Date[] | undefined>([]);
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -60,15 +61,24 @@ export default function Home() {
   };
 
   const handleCreateMeeting = async () => {
-    const data = await postData({
-      title,
-      days: days?.map((day) => day.toISOString()),
-      startTime,
-      endTime,
-    });
+    if (loading) return;
 
-    if (data) {
-      router.push(`/pages/${data[0].pageId}`);
+    setLoading(true);
+
+    try {
+      const data = await postData({
+        title,
+        days: days?.map((day) => day.toISOString()),
+        startTime,
+        endTime,
+      });
+
+      if (data) {
+        router.push(`/pages/${data[0].pageId}`);
+      }
+    } catch (error) {
+      console.log("routing failed", error);
+      setLoading(false);
     }
   };
 
@@ -128,7 +138,7 @@ export default function Home() {
         className={`w-full py-3 rounded-xl text-sm mobile:text-base ${
           isCompleteSetting ? "bg-blue text-white" : "bg-[#F0F0F0]"
         }`}
-        disabled={!isCompleteSetting}
+        disabled={!isCompleteSetting || loading}
         onClick={handleCreateMeeting}
       >
         미팅 만들기
