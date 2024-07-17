@@ -64,13 +64,13 @@ export default async function Page({ params }: { params: { pageId: string } }) {
         </TabsList>
         <TabsContent value="account" className="w-full h-full px-10 py-10">
           <div className="w-full h-full flex flex-col justify-center items-center gap-4">
-            <div className="w-full flex justify-between items-center px-4">
+            <div className="w-full flex justify-between items-center px-3">
               <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
               <ShareIcon className="w-6 h-6" />
             </div>
-            <Carousel className="w-full max-w-xs relative">
-              <CarouselPrevious className="absolute top-3" />
-              <CarouselNext className="absolute top-3" />
+            <Carousel className="w-full max-w-xs relative mt-10">
+              <CarouselPrevious className="absolute top-4 left-1/5 z-50" />
+              <CarouselNext className="absolute top-4 right-0 z-50" />
               <CarouselContent>
                 {Object.entries(dates).map(([month, value], index) => {
                   value = value.sort((a, b) => a - b);
@@ -84,17 +84,36 @@ export default async function Page({ params }: { params: { pageId: string } }) {
 
                           return (
                             <CarouselItem key={i}>
-                              <div className="p-1">
-                                <span className="text-4xl font-semibold">
-                                  {month}
+                              <div className="flex flex-col justify-center items-center">
+                                <span className="text-lg font-medium p-0.5 text-[#979797]">
+                                  {`${month} 월`}
                                 </span>
-                                <div className="flex gap-2">
+                                <div className="flex w-full h-full overflow-scroll items-center justify-center gap-2 m-6 border border-blue rounded-lg px-4 py-3">
                                   {sliced.map((date, index) => (
-                                    <div key={index}>{date}</div>
+                                    <div key={index}>
+                                      <div className="text-[#979797]">{`${date}일`}</div>
+                                      {Array.from(
+                                        {
+                                          length:
+                                            parseInt(data?.endTime || "0") -
+                                            parseInt(data?.startTime || "0") +
+                                            1,
+                                        },
+                                        (_, i) => {
+                                          return (
+                                            <div
+                                              key={i}
+                                              className="flex w-3 y-2 bg-gray-200"
+                                            >
+                                              i
+                                            </div>
+                                          );
+                                        }
+                                      )}
+                                    </div>
                                   ))}
                                 </div>
                               </div>
-                              <div>imsg</div>
                             </CarouselItem>
                           );
                         }
@@ -102,15 +121,34 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                     </>
                   ) : (
                     <CarouselItem key={index}>
-                      <div className="p-1">
-                        <span className="text-4xl font-semibold">{month}</span>
-                        <div className="flex gap-2">
+                      <div className="flex flex-col justify-center items-center">
+                        <span className="text-lg font-medium p-0.5 text-[#979797]">{`${month} 월`}</span>
+                        <div className="flex w-full h-full overflow-scroll items-center justify-center gap-2 m-6 border border-blue rounded-lg px-4 py-3">
                           {value.map((date, index) => (
-                            <div key={index}>{date}</div>
+                            <div key={index}>
+                              <div className="text-[#979797]">{`${date}일`}</div>
+                              {Array.from(
+                                {
+                                  length:
+                                    parseInt(data?.endTime || "0") -
+                                    parseInt(data?.startTime || "0") +
+                                    1,
+                                },
+                                (_, i) => {
+                                  return (
+                                    <div
+                                      key={i}
+                                      className="flex w-3 y-2 bg-gray-200"
+                                    >
+                                      i
+                                    </div>
+                                  );
+                                }
+                              )}
+                            </div>
                           ))}
                         </div>
                       </div>
-                      <div>imsg</div>
                     </CarouselItem>
                   );
                 })}
