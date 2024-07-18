@@ -45,7 +45,10 @@ export default async function Page({ params }: { params: { pageId: string } }) {
 
   return (
     <main className="h-full flex flex-col">
-      <Tabs defaultValue="account" className="w-full h-full p-0">
+      <Tabs
+        defaultValue="account"
+        className="w-full h-dvh p-0 overflow-y-scroll"
+      >
         <TabsList className="flex mt-6 w-screen px-0 py-0 bg-transparent">
           <div className="w-full h-full flex relative">
             <TabsTrigger
@@ -62,13 +65,13 @@ export default async function Page({ params }: { params: { pageId: string } }) {
             </TabsTrigger>
           </div>
         </TabsList>
-        <TabsContent value="account" className="w-full h-full px-10 py-10">
-          <div className="w-full h-full flex flex-col justify-center items-center gap-4">
+        <TabsContent value="account" className="w-screen h-full px-10 py-10">
+          <div className="w-full flex flex-col justify-center items-center gap-4">
             <div className="w-full flex justify-between items-center px-3">
               <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
               <ShareIcon className="w-6 h-6" />
             </div>
-            <Carousel className="w-full max-w-xs relative mt-10">
+            <Carousel className="w-full h-full max-w-xs relative mt-10">
               <CarouselPrevious className="absolute top-4 left-1/5 z-50" />
               <CarouselNext className="absolute top-4 right-0 z-50" />
               <CarouselContent>
@@ -84,32 +87,35 @@ export default async function Page({ params }: { params: { pageId: string } }) {
 
                           return (
                             <CarouselItem key={i}>
-                              <div className="flex flex-col justify-center items-center">
+                              <div className="flex flex-col w-full h-full justify-center items-center">
                                 <span className="text-lg font-medium p-0.5 text-[#979797]">
                                   {`${month} 월`}
                                 </span>
-                                <div className="flex w-full h-full overflow-scroll items-center justify-center gap-2 m-6 border border-blue rounded-lg px-4 py-3">
+                                <div className="flex w-full overflow-y-scroll items-start justify-center m-6 border border-blue rounded-lg px-4 py-3">
                                   {sliced.map((date, index) => (
-                                    <div key={index}>
+                                    <div
+                                      key={index}
+                                      className="flex flex-col w-1/6 justify-center items-center"
+                                    >
                                       <div className="text-[#979797]">{`${date}일`}</div>
-                                      {Array.from(
-                                        {
-                                          length:
-                                            parseInt(data?.endTime || "0") -
-                                            parseInt(data?.startTime || "0") +
-                                            1,
-                                        },
-                                        (_, i) => {
-                                          return (
-                                            <div
-                                              key={i}
-                                              className="flex w-3 y-2 bg-gray-200"
-                                            >
-                                              i
-                                            </div>
-                                          );
-                                        }
-                                      )}
+                                      <div className="flex flex-col w-full justify-center items-center">
+                                        {Array.from(
+                                          {
+                                            length:
+                                              parseInt(data?.endTime || "0") -
+                                              parseInt(data?.startTime || "0") +
+                                              1,
+                                          },
+                                          (_, i) => {
+                                            return (
+                                              <div
+                                                key={i}
+                                                className="flex w-full aspect-[4/3] border border-[#D9D9D9] justify-center items-center"
+                                              />
+                                            );
+                                          }
+                                        )}
+                                      </div>
                                     </div>
                                   ))}
                                 </div>
@@ -121,11 +127,14 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                     </>
                   ) : (
                     <CarouselItem key={index}>
-                      <div className="flex flex-col justify-center items-center">
+                      <div className="flex flex-col w-full h-full justify-center items-center">
                         <span className="text-lg font-medium p-0.5 text-[#979797]">{`${month} 월`}</span>
-                        <div className="flex w-full h-full overflow-scroll items-center justify-center gap-2 m-6 border border-blue rounded-lg px-4 py-3">
+                        <div className="flex w-full overflow-scroll items-center justify-center gap-2 m-6 border border-blue rounded-lg px-4 py-3">
                           {value.map((date, index) => (
-                            <div key={index}>
+                            <div
+                              key={index}
+                              className="flex flex-col w-1/6 justify-center items-center"
+                            >
                               <div className="text-[#979797]">{`${date}일`}</div>
                               {Array.from(
                                 {
@@ -138,10 +147,8 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                                   return (
                                     <div
                                       key={i}
-                                      className="flex w-3 y-2 bg-gray-200"
-                                    >
-                                      i
-                                    </div>
+                                      className="flex w-full aspect-[4/3] border border-[#D9D9D9] justify-center items-center"
+                                    />
                                   );
                                 }
                               )}
@@ -165,8 +172,6 @@ export default async function Page({ params }: { params: { pageId: string } }) {
           </div>
         </TabsContent>
       </Tabs>
-
-      <h1>{data?.days}</h1>
     </main>
   );
 }
