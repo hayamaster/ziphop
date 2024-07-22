@@ -80,50 +80,113 @@ export default async function Page({ params }: { params: { pageId: string } }) {
 
                   return value.length > 5 ? (
                     <>
-                      {Array.from(
-                        { length: Math.ceil(value.length / 5) },
-                        (_, i) => {
-                          const sliced = value.slice(i * 5, i * 5 + 5);
-
-                          return (
+                      {data?.startTime &&
+                        data?.endTime &&
+                        Array.from(
+                          { length: Math.ceil(value.length / 5) },
+                          (_, i) => (
                             <CarouselItem key={i}>
                               <div className="flex flex-col w-full h-full justify-center items-center">
                                 <span className="text-lg font-medium p-0.5 text-[#979797]">
                                   {`${month} 월`}
                                 </span>
-                                <div className="flex w-full overflow-y-scroll items-start justify-center m-6 border border-blue rounded-lg px-4 py-3">
-                                  {sliced.map((date, index) => (
-                                    <div
-                                      key={index}
-                                      className="flex flex-col w-1/6 justify-center items-center"
-                                    >
-                                      <div className="text-[#979797]">{`${date}일`}</div>
-                                      <div className="flex flex-col w-full justify-center items-center">
-                                        {Array.from(
-                                          {
-                                            length:
-                                              parseInt(data?.endTime || "0") -
-                                              parseInt(data?.startTime || "0") +
-                                              1,
-                                          },
-                                          (_, i) => {
-                                            return (
-                                              <div
-                                                key={i}
-                                                className="flex w-full aspect-[4/3] border border-[#D9D9D9] justify-center items-center"
-                                              />
-                                            );
-                                          }
-                                        )}
+                                <table className="w-full border-separate table-fixed border border-blue overflow-y-scroll mt-6 rounded-lg px-4 py-3">
+                                  <thead>
+                                    <tr>
+                                      <th className="py-2 text-[#979797] font-medium text-sm">
+                                        Hour
+                                      </th>
+                                      {value
+                                        .slice(i * 5, i * 5 + 5)
+                                        .map((date, index) => (
+                                          <th
+                                            key={index}
+                                            className="py-2 text-[#979797] font-medium text-sm"
+                                          >
+                                            {`${date}일`}
+                                          </th>
+                                        ))}
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {Array.from(
+                                      {
+                                        length:
+                                          parseInt(data.endTime) -
+                                          parseInt(data.startTime) +
+                                          1,
+                                      },
+                                      (_, hourIndex) => (
+                                        <tr key={hourIndex}>
+                                          <td className="border border-blue px-4 py-2 text-center">
+                                            {parseInt(data.startTime) +
+                                              hourIndex}
+                                          </td>
+                                          {value
+                                            .slice(i * 5, i * 5 + 5)
+                                            .map((date, dateIndex) => (
+                                              <td
+                                                key={dateIndex}
+                                                className="border border-blue px-4 py-2"
+                                              >
+                                                <div className="flex w-full aspect-[4/3] border border-[#D9D9D9] justify-center items-center" />
+                                              </td>
+                                            ))}
+                                        </tr>
+                                      )
+                                    )}
+                                  </tbody>
+                                </table>
+
+                                {/* <div className="flex w-full overflow-y-scroll items-start justify-center m-6 border border-blue rounded-lg px-4 py-3">
+                                  <div className="flex flex-col mt-8 gap-[0.73rem]">
+                                    {Array.from(
+                                      {
+                                        length:
+                                          parseInt(data.endTime) -
+                                          parseInt(data.startTime) +
+                                          1,
+                                      },
+                                      (_, i) => (
+                                        <div key={i}>
+                                          {parseInt(data.startTime) + i}
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                  {value
+                                    .slice(i * 5, i * 5 + 5)
+                                    .map((date, index) => (
+                                      <div
+                                        key={index}
+                                        className="flex flex-col w-1/6 justify-center items-center"
+                                      >
+                                        <div className="text-[#979797]">{`${date}일`}</div>
+                                        <div className="flex flex-col w-full justify-center items-center">
+                                          {Array.from(
+                                            {
+                                              length:
+                                                parseInt(data.endTime) -
+                                                parseInt(data.startTime) +
+                                                1,
+                                            },
+                                            (_, i) => {
+                                              return (
+                                                <div
+                                                  key={i}
+                                                  className="flex w-full aspect-[4/3] border border-[#D9D9D9] justify-center items-center"
+                                                />
+                                              );
+                                            }
+                                          )}
+                                        </div>
                                       </div>
-                                    </div>
-                                  ))}
-                                </div>
+                                    ))}
+                                </div> */}
                               </div>
                             </CarouselItem>
-                          );
-                        }
-                      )}
+                          )
+                        )}
                     </>
                   ) : (
                     <CarouselItem key={index}>
