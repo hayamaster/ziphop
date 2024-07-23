@@ -45,11 +45,8 @@ export default async function Page({ params }: { params: { pageId: string } }) {
   console.log(dates);
 
   return (
-    <main className="h-full flex flex-col">
-      <Tabs
-        defaultValue="account"
-        className="w-full h-dvh p-0 overflow-y-scroll"
-      >
+    <main className="h-dvh flex flex-col">
+      <Tabs defaultValue="account" className="w-full p-0 overflow-y-scroll">
         <TabsList className="flex mt-6 w-screen px-0 py-0 bg-transparent">
           <div className="w-full h-full flex relative">
             <TabsTrigger
@@ -66,7 +63,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
             </TabsTrigger>
           </div>
         </TabsList>
-        <TabsContent value="account" className="w-screen px-10 py-10">
+        <TabsContent value="account" className="w-screen px-10 py-5 mt-5">
           <div className="w-full flex flex-col justify-center items-center gap-4">
             <div className="w-full flex justify-between items-center px-3">
               <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
@@ -203,7 +200,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
               </CarouselContent>
             </Carousel>
           </div>
-          <div className="px-2 py-3 w-full flex flex-col gap-2">
+          <footer className="px-2 py-3 w-full flex flex-col gap-2">
             <p className="text-[#979797] font-base text-sm">참여한 사람</p>
             <div className="flex gap-2 w-full overflow-x-scroll whitespace-nowrap">
               {IMSY_PARTICIPANT.map((name, index) => (
@@ -215,7 +212,10 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                 </span>
               ))}
             </div>
-          </div>
+            <button className="w-full bg-blue py-2 mt-8 rounded-lg text-white">
+              참여하기
+            </button>
+          </footer>
         </TabsContent>
         <TabsContent value="password" className="w-full h-full px-10 py-10">
           <div className="w-full h-full flex flex-col justify-center items-center">
