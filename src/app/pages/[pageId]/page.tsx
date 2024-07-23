@@ -65,7 +65,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
             </TabsTrigger>
           </div>
         </TabsList>
-        <TabsContent value="account" className="w-screen h-full px-10 py-10">
+        <TabsContent value="account" className="w-screen px-10 py-10">
           <div className="w-full flex flex-col justify-center items-center gap-4">
             <div className="w-full flex justify-between items-center px-3">
               <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
@@ -90,9 +90,9 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                                 <span className="text-lg font-medium p-0.5 text-[#979797]">
                                   {`${month} 월`}
                                 </span>
-                                <table className="w-full border-separate border-spacing-0 table-fixed border border-blue overflow-y-scroll mt-6 rounded-lg pr-3 py-3">
-                                  <thead>
-                                    <tr>
+                                <table className="w-full border-separate border-spacing-0 table-fixed border border-blue mt-6 rounded-lg pr-3 py-3">
+                                  <thead className="block">
+                                    <tr className="flex justify-center items-center">
                                       <th className="py-2 w-12 text-[#979797] font-medium text-sm">
                                         Hour
                                       </th>
@@ -108,7 +108,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                                         ))}
                                     </tr>
                                   </thead>
-                                  <tbody>
+                                  <tbody className="block max-h-96 w-full overflow-y-scroll">
                                     {Array.from(
                                       {
                                         length:
@@ -119,7 +119,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                                       (_, hourIndex) => (
                                         <tr
                                           key={hourIndex}
-                                          className="border-collapse w-full"
+                                          className="border-collapse w-full flex justify-center items-center"
                                         >
                                           <td className="py-2 w-12 text-center text-[#979797] font-base text-sm">
                                             {parseInt(data.startTime) +
@@ -153,8 +153,8 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                             {`${month} 월`}
                           </span>
                           <table className="w-full border-separate border-spacing-0 table-fixed border border-blue overflow-y-scroll mt-6 rounded-lg pr-3 py-3">
-                            <thead>
-                              <tr>
+                            <thead className="block">
+                              <tr className="flex justify-center items-center">
                                 <th className="py-2 w-12 text-[#979797] font-medium text-sm">
                                   Hour
                                 </th>
@@ -168,7 +168,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                                 ))}
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody className="block max-h-96 w-full overflow-y-scroll">
                               {Array.from(
                                 {
                                   length:
@@ -179,7 +179,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                                 (_, hourIndex) => (
                                   <tr
                                     key={hourIndex}
-                                    className="border-collapse w-full"
+                                    className="border-collapse w-full flex justify-center items-center"
                                   >
                                     <td className="py-2 w-12 text-center text-[#979797] font-base text-sm">
                                       {parseInt(data.startTime) + hourIndex}
