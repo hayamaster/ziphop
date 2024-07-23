@@ -22,6 +22,7 @@ interface Data {
 }
 
 // const testId = "506f47d7-cb0e-4d9b-931d-63fbebcd5533";
+const IMSY_PARTICIPANT = ["김주하", "한지섭", "강민재", "하주김", "후후후"];
 
 async function getData(pageId: string): Promise<Data | null> {
   const { data, error } = await supabase
@@ -71,7 +72,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
               <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
               <ShareIcon className="w-6 h-6" />
             </div>
-            <Carousel className="w-full h-full max-w-xs relative mt-10">
+            <Carousel className="w-full h-full max-w-xs relative mt-4">
               <CarouselPrevious className="absolute top-4 left-1/5 z-50" />
               <CarouselNext className="absolute top-4 right-0 z-50" />
               <CarouselContent>
@@ -85,23 +86,23 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                         Array.from(
                           { length: Math.ceil(value.length / 5) },
                           (_, i) => (
-                            <CarouselItem key={i}>
+                            <CarouselItem key={i * index + i}>
                               <div className="flex flex-col w-full h-full justify-center items-center">
-                                <span className="text-lg font-medium p-0.5 text-[#979797]">
+                                <span className="text-base font-medium p-0.5 text-[#979797]">
                                   {`${month} 월`}
                                 </span>
-                                <table className="w-full border-separate border-spacing-0 table-fixed border border-blue mt-6 rounded-lg pr-3 py-3">
+                                <table className="w-full border-separate border-spacing-0 table-fixed border border-blue mt-3 rounded-lg pr-3 py-3">
                                   <thead className="block">
                                     <tr className="flex justify-center items-center">
-                                      <th className="py-2 w-12 text-[#979797] font-medium text-sm">
-                                        Hour
+                                      <th className="py-2 w-12 text-[#979797] font-normal text-sm">
+                                        Time
                                       </th>
                                       {value
                                         .slice(i * 5, i * 5 + 5)
                                         .map((date, index) => (
                                           <th
                                             key={index}
-                                            className="py-2 w-12 text-[#979797] font-medium text-sm"
+                                            className="py-2 w-12 text-[#979797] font-normal text-sm"
                                           >
                                             {`${date}일`}
                                           </th>
@@ -149,19 +150,19 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                     data?.startTime && data?.endTime && (
                       <CarouselItem>
                         <div className="flex flex-col w-full h-full justify-center items-center">
-                          <span className="text-lg font-medium p-0.5 text-[#979797]">
+                          <span className="text-base font-medium p-0.5 text-[#979797]">
                             {`${month} 월`}
                           </span>
-                          <table className="w-full border-separate border-spacing-0 table-fixed border border-blue overflow-y-scroll mt-6 rounded-lg pr-3 py-3">
+                          <table className="w-full border-separate border-spacing-0 table-fixed border border-blue overflow-y-scroll mt-3 rounded-lg pr-3 py-3">
                             <thead className="block">
                               <tr className="flex justify-center items-center">
-                                <th className="py-2 w-12 text-[#979797] font-medium text-sm">
-                                  Hour
+                                <th className="py-2 w-12 text-[#979797] font-normal text-sm">
+                                  Time
                                 </th>
                                 {value.map((date, index) => (
                                   <th
                                     key={index}
-                                    className="py-2 w-12 text-[#979797] font-medium text-sm"
+                                    className="py-2 w-12 text-[#979797] font-normal text-sm"
                                   >
                                     {`${date}일`}
                                   </th>
@@ -201,6 +202,19 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                 })}
               </CarouselContent>
             </Carousel>
+          </div>
+          <div className="px-2 py-3 w-full flex flex-col gap-2">
+            <p className="text-[#979797] font-base text-sm">참여한 사람</p>
+            <div className="flex gap-2 w-full overflow-x-scroll whitespace-nowrap">
+              {IMSY_PARTICIPANT.map((name, index) => (
+                <span
+                  key={index}
+                  className="px-3.5 py-0.5 border border-blue text-sm rounded-lg text-blue"
+                >
+                  {name}
+                </span>
+              ))}
+            </div>
           </div>
         </TabsContent>
         <TabsContent value="password" className="w-full h-full px-10 py-10">
