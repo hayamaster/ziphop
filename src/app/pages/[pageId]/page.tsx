@@ -2,7 +2,6 @@
 // import { useState, useEffect } from "react";
 import { supabase } from "@/apis";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShareIcon } from "@/assets";
 import { groupDaysByMonth } from "@/utils";
 import {
   Carousel,
@@ -11,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { ShareButton } from "./components";
 
 interface Data {
   title: string;
@@ -67,7 +67,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
           <div className="w-full flex flex-col justify-center items-center gap-4">
             <div className="w-full flex justify-between items-center px-3">
               <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
-              <ShareIcon className="w-6 h-6" />
+              <ShareButton />
             </div>
             <Carousel className="w-full h-full max-w-xs relative mt-4">
               <CarouselPrevious className="absolute top-4 left-1/5 z-50" />
@@ -221,7 +221,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
           <div className="w-full h-full flex flex-col justify-center items-center">
             <div className="w-full flex justify-between items-center px-4">
               <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
-              <ShareIcon className="w-6 h-6" />
+              <ShareButton />
             </div>
           </div>
         </TabsContent>
