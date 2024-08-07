@@ -36,7 +36,7 @@ const ShareButton = () => {
     <>
       <ShareIcon className="w-6 h-6" onClick={share} />
       <Toast
-        message="コピーしました"
+        message="링크를 복사했습니다."
         show={showToast}
         onClose={handleCloseToast}
       />
