@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { ShareButton } from "./components";
+import Link from "next/link";
 
 interface Data {
   title: string;
@@ -212,9 +213,18 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                 </span>
               ))}
             </div>
-            <button className="w-full bg-blue py-2 mt-8 rounded-lg text-white">
-              참여하기
-            </button>
+            <Link
+              href={{
+                pathname: `/pages/${data?.pageId}/participate`,
+                query: {
+                  title: data?.title,
+                },
+              }}
+            >
+              <button className="w-full bg-blue py-2 mt-8 rounded-lg text-white">
+                참여하기
+              </button>
+            </Link>
           </footer>
         </TabsContent>
         <TabsContent value="password" className="w-full h-full px-10 py-10">
