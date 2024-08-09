@@ -1,5 +1,3 @@
-// "use client";
-// import { useState, useEffect } from "react";
 import { supabase } from "@/apis";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { groupDaysByMonth } from "@/utils";
@@ -12,6 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import { ShareButton } from "./components";
 import Link from "next/link";
+import { Fragment } from "react";
 
 interface Data {
   title: string;
@@ -78,7 +77,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                   value = value.sort((a, b) => a - b);
 
                   return value.length > 5 ? (
-                    <>
+                    <Fragment key={index}>
                       {data?.startTime &&
                         data?.endTime &&
                         Array.from(
@@ -143,10 +142,10 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                             </CarouselItem>
                           )
                         )}
-                    </>
+                    </Fragment>
                   ) : (
                     data?.startTime && data?.endTime && (
-                      <CarouselItem>
+                      <CarouselItem key={index}>
                         <div className="flex flex-col w-full h-full justify-center items-center">
                           <span className="text-base font-medium p-0.5 text-[#979797]">
                             {`${month} 월`}
