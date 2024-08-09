@@ -218,6 +218,9 @@ export default async function Page({ params }: { params: { pageId: string } }) {
                 pathname: `/pages/${data?.pageId}/participate`,
                 query: {
                   title: data?.title,
+                  days: data?.days,
+                  startTime: data?.startTime,
+                  endTime: data?.endTime,
                 },
               }}
             >
