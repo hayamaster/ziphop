@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
   Carousel,
@@ -22,6 +22,7 @@ interface Data {
 
 export default function Page() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [data, setData] = useState<Data>();
 
   useEffect(() => {
@@ -46,9 +47,16 @@ export default function Page() {
     setData(obj);
   }, [searchParams]);
 
+  const handleClickBack = () => {
+    router.back();
+  };
+
   return (
     <div className="w-full h-full flex flex-col">
-      <Arrow className="w-6 h-6 mt-4 mb-3 shrink-0 mobile:w-8 mobile:h-8 mobile:mt-6 mobile:mb-5" />
+      <Arrow
+        className="w-6 h-6 mt-4 mb-3 shrink-0 mobile:w-8 mobile:h-8 mobile:mt-6 mobile:mb-5"
+        onClick={handleClickBack}
+      />
       <header className="py-4">
         <h1 className="text-lg text-blue font-semibold mobile:text-xl">
           {data?.title}
@@ -189,7 +197,10 @@ export default function Page() {
           겹치는 시간 확인하기
         </button>
         <div className="flex w-full gap-3 py-4 mobile:py-6">
-          <button className="w-full text-sm px-3 py-2 bg-[#5A5A5A] text-white rounded-lg mobile:text-base">
+          <button
+            className="w-full text-sm px-3 py-2 bg-[#5A5A5A] text-white rounded-lg mobile:text-base"
+            onClick={handleClickBack}
+          >
             취소
           </button>
           <button className="w-full text-sm px-3 py-2 bg-blue text-white rounded-lg mobile:text-base">
