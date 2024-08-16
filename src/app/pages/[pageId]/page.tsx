@@ -1,6 +1,6 @@
 import { supabase } from "@/apis";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { groupDaysByMonth } from "@/utils";
+import { groupDays } from "@/utils";
 import {
   Carousel,
   CarouselContent,
@@ -41,8 +41,8 @@ async function getData(pageId: string): Promise<Data | null> {
 export default async function Page({ params }: { params: { pageId: string } }) {
   const data = await getData(params.pageId);
   console.log(data);
-  const dates = groupDaysByMonth(data?.days || []);
-  console.log(dates);
+  const years = groupDays(data?.days || []);
+  console.log(years);
 
   return (
     <main className="h-dvh flex flex-col">
@@ -73,129 +73,131 @@ export default async function Page({ params }: { params: { pageId: string } }) {
               <CarouselPrevious className="absolute top-4 left-1/5 z-50" />
               <CarouselNext className="absolute top-4 right-0 z-50" />
               <CarouselContent>
-                {Object.entries(dates).map(([month, value], index) => {
-                  value = value.sort((a, b) => a - b);
+                {Object.entries(years).map(([year, months], idx1) => {
+                  return Object.entries(months).map(([month, value], idx2) => {
+                    value = value.sort((a, b) => a - b);
 
-                  return value.length > 5 ? (
-                    <Fragment key={index}>
-                      {data?.startTime &&
-                        data?.endTime &&
-                        Array.from(
-                          { length: Math.ceil(value.length / 5) },
-                          (_, i) => (
-                            <CarouselItem key={i * index + i}>
-                              <div className="flex flex-col w-full h-full justify-center items-center">
-                                <span className="text-base font-medium p-0.5 text-[#979797]">
-                                  {`${month} 월`}
-                                </span>
-                                <table className="w-full border-separate border-spacing-0 table-fixed border border-blue mt-3 rounded-lg pr-3 py-3">
-                                  <thead className="block">
-                                    <tr className="flex justify-center items-center">
-                                      <th className="py-2 w-12 text-[#979797] font-normal text-sm">
-                                        Time
-                                      </th>
-                                      {value
-                                        .slice(i * 5, i * 5 + 5)
-                                        .map((date, index) => (
-                                          <th
-                                            key={index}
-                                            className="py-2 w-12 text-[#979797] font-normal text-sm"
+                    return value.length > 5 ? (
+                      <Fragment key={idx1 + idx2}>
+                        {data?.startTime &&
+                          data?.endTime &&
+                          Array.from(
+                            { length: Math.ceil(value.length / 5) },
+                            (_, i) => (
+                              <CarouselItem key={i * idx1 + idx2 + i}>
+                                <div className="flex flex-col w-full h-full justify-center items-center">
+                                  <span className="text-base font-medium p-0.5 text-[#979797]">
+                                    {`${year}년 ${month}월`}
+                                  </span>
+                                  <table className="w-full border-separate border-spacing-0 table-fixed border border-blue mt-3 rounded-lg pr-3 py-3">
+                                    <thead className="block">
+                                      <tr className="flex justify-center items-center">
+                                        <th className="py-2 w-12 text-[#979797] font-normal text-sm">
+                                          Time
+                                        </th>
+                                        {value
+                                          .slice(i * 5, i * 5 + 5)
+                                          .map((date, index) => (
+                                            <th
+                                              key={index}
+                                              className="py-2 w-12 text-[#979797] font-normal text-sm"
+                                            >
+                                              {`${date}일`}
+                                            </th>
+                                          ))}
+                                      </tr>
+                                    </thead>
+                                    <tbody className="block max-h-96 w-full overflow-y-scroll">
+                                      {Array.from(
+                                        {
+                                          length:
+                                            parseInt(data.endTime) -
+                                            parseInt(data.startTime) +
+                                            1,
+                                        },
+                                        (_, hourIndex) => (
+                                          <tr
+                                            key={hourIndex}
+                                            className="border-collapse w-full flex justify-center items-center"
                                           >
-                                            {`${date}일`}
-                                          </th>
-                                        ))}
-                                    </tr>
-                                  </thead>
-                                  <tbody className="block max-h-96 w-full overflow-y-scroll">
-                                    {Array.from(
-                                      {
-                                        length:
-                                          parseInt(data.endTime) -
-                                          parseInt(data.startTime) +
-                                          1,
-                                      },
-                                      (_, hourIndex) => (
-                                        <tr
-                                          key={hourIndex}
-                                          className="border-collapse w-full flex justify-center items-center"
-                                        >
-                                          <td className="py-2 w-12 text-center text-[#979797] font-base text-sm">
-                                            {parseInt(data.startTime) +
-                                              hourIndex}
-                                          </td>
-                                          {value
-                                            .slice(i * 5, i * 5 + 5)
-                                            .map((_, dateIndex) => (
-                                              <td
-                                                key={dateIndex}
-                                                className="p-0"
-                                              >
-                                                <div className="flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center" />
-                                              </td>
-                                            ))}
-                                        </tr>
-                                      )
-                                    )}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </CarouselItem>
-                          )
-                        )}
-                    </Fragment>
-                  ) : (
-                    data?.startTime && data?.endTime && (
-                      <CarouselItem key={index}>
-                        <div className="flex flex-col w-full h-full justify-center items-center">
-                          <span className="text-base font-medium p-0.5 text-[#979797]">
-                            {`${month} 월`}
-                          </span>
-                          <table className="w-full border-separate border-spacing-0 table-fixed border border-blue overflow-y-scroll mt-3 rounded-lg pr-3 py-3">
-                            <thead className="block">
-                              <tr className="flex justify-center items-center">
-                                <th className="py-2 w-12 text-[#979797] font-normal text-sm">
-                                  Time
-                                </th>
-                                {value.map((date, index) => (
-                                  <th
-                                    key={index}
-                                    className="py-2 w-12 text-[#979797] font-normal text-sm"
-                                  >
-                                    {`${date}일`}
+                                            <td className="py-2 w-12 text-center text-[#979797] font-base text-sm">
+                                              {parseInt(data.startTime) +
+                                                hourIndex}
+                                            </td>
+                                            {value
+                                              .slice(i * 5, i * 5 + 5)
+                                              .map((_, dateIndex) => (
+                                                <td
+                                                  key={dateIndex}
+                                                  className="p-0"
+                                                >
+                                                  <div className="flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center" />
+                                                </td>
+                                              ))}
+                                          </tr>
+                                        )
+                                      )}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </CarouselItem>
+                            )
+                          )}
+                      </Fragment>
+                    ) : (
+                      data?.startTime && data?.endTime && (
+                        <CarouselItem key={idx2}>
+                          <div className="flex flex-col w-full h-full justify-center items-center">
+                            <span className="text-base font-medium p-0.5 text-[#979797]">
+                              {`${year}년 ${month}월`}
+                            </span>
+                            <table className="w-full border-separate border-spacing-0 table-fixed border border-blue overflow-y-scroll mt-3 rounded-lg pr-3 py-3">
+                              <thead className="block">
+                                <tr className="flex justify-center items-center">
+                                  <th className="py-2 w-12 text-[#979797] font-normal text-sm">
+                                    Time
                                   </th>
-                                ))}
-                              </tr>
-                            </thead>
-                            <tbody className="block max-h-96 w-full overflow-y-scroll">
-                              {Array.from(
-                                {
-                                  length:
-                                    parseInt(data.endTime) -
-                                    parseInt(data.startTime) +
-                                    1,
-                                },
-                                (_, hourIndex) => (
-                                  <tr
-                                    key={hourIndex}
-                                    className="border-collapse w-full flex justify-center items-center"
-                                  >
-                                    <td className="py-2 w-12 text-center text-[#979797] font-base text-sm">
-                                      {parseInt(data.startTime) + hourIndex}
-                                    </td>
-                                    {value.map((_, dateIndex) => (
-                                      <td key={dateIndex} className="p-0">
-                                        <div className="flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center" />
+                                  {value.map((date, index) => (
+                                    <th
+                                      key={index}
+                                      className="py-2 w-12 text-[#979797] font-normal text-sm"
+                                    >
+                                      {`${date}일`}
+                                    </th>
+                                  ))}
+                                </tr>
+                              </thead>
+                              <tbody className="block max-h-96 w-full overflow-y-scroll">
+                                {Array.from(
+                                  {
+                                    length:
+                                      parseInt(data.endTime) -
+                                      parseInt(data.startTime) +
+                                      1,
+                                  },
+                                  (_, hourIndex) => (
+                                    <tr
+                                      key={hourIndex}
+                                      className="border-collapse w-full flex justify-center items-center"
+                                    >
+                                      <td className="py-2 w-12 text-center text-[#979797] font-base text-sm">
+                                        {parseInt(data.startTime) + hourIndex}
                                       </td>
-                                    ))}
-                                  </tr>
-                                )
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                      </CarouselItem>
-                    )
-                  );
+                                      {value.map((_, dateIndex) => (
+                                        <td key={dateIndex} className="p-0">
+                                          <div className="flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center" />
+                                        </td>
+                                      ))}
+                                    </tr>
+                                  )
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        </CarouselItem>
+                      )
+                    );
+                  });
                 })}
               </CarouselContent>
             </Carousel>

@@ -1,1 +1,1 @@
-export { default as groupDaysByMonth } from "./groupDaysByMonth";
+export { default as groupDays } from "./groupDays";

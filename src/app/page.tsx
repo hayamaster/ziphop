@@ -57,7 +57,7 @@ export default function Home() {
     Number(startTime) < Number(endTime);
 
   const formatCaption: DateFormatter = (month, options) => {
-    return <>{format(month, "LLLL", { locale: options?.locale })}</>;
+    return <>{format(month, "yyyy LLLL", { locale: options?.locale })}</>;
   };
 
   const handleCreateMeeting = async () => {

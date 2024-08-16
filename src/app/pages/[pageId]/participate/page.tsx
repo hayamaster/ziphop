@@ -8,20 +8,20 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { groupDaysByMonth } from "@/utils";
+import { groupDays } from "@/utils";
 import { Fragment } from "react";
 import { Arrow } from "@/assets";
 
 interface Data {
   title: string;
-  dates: { [key: string]: number[] };
+  dates: { [key: number]: { [key: string]: number[] } };
   days: string[];
   startTime: string;
   endTime: string;
 }
 
 interface SelectedBlock {
-  date: number;
+  date: string;
   hour: number;
 }
 
@@ -49,7 +49,7 @@ export default function Page() {
       }
     }
 
-    obj.dates = groupDaysByMonth(obj.days || []);
+    obj.dates = groupDays(obj.days || []);
 
     setData(obj);
   }, [searchParams]);
@@ -58,7 +58,7 @@ export default function Page() {
     router.back();
   };
 
-  const handleMouseDown = (date: number, hour: number) => {
+  const handleMouseDown = (date: string, hour: number) => {
     setIsDragging(true);
     handleBlockSelection(date, hour);
   };
@@ -67,13 +67,13 @@ export default function Page() {
     setIsDragging(false);
   };
 
-  const handleMouseEnter = (date: number, hour: number) => {
+  const handleMouseEnter = (date: string, hour: number) => {
     if (isDragging) {
       handleBlockSelection(date, hour);
     }
   };
 
-  const handleBlockSelection = (date: number, hour: number) => {
+  const handleBlockSelection = (date: string, hour: number) => {
     setSelectedBlocks((prev) => {
       return isBlockSelected(date, hour)
         ? prev.filter((block) => block.date !== date || block.hour !== hour)
@@ -81,10 +81,14 @@ export default function Page() {
     });
   };
 
-  const isBlockSelected = (date: number, hour: number) => {
+  const isBlockSelected = (date: string, hour: number) => {
     return selectedBlocks.some(
       (block) => block.date === date && block.hour === hour
     );
+  };
+
+  const handleSaveTime = () => {
+    console.log(selectedBlocks);
   };
 
   return (
@@ -107,182 +111,186 @@ export default function Page() {
           <CarouselNext className="absolute top-4 right-0 z-50" />
           <CarouselContent key={`${data?.endTime} + '10'`}>
             {data &&
-              Object.entries(data.dates).map(([month, value], index) => {
-                value = value.sort((a, b) => a - b);
+              Object.entries(data.dates).map(([year, months], idx1) => {
+                return Object.entries(months).map(([month, value], idx2) => {
+                  value = value.sort((a, b) => a - b);
 
-                return value.length > 5 ? (
-                  <Fragment key={index}>
-                    {data?.startTime &&
-                      data?.endTime &&
-                      Array.from(
-                        { length: Math.ceil(value.length / 5) },
-                        (_, i) => (
-                          <CarouselItem key={`${index}-${i}`}>
-                            <div className="flex flex-col w-full h-full justify-center items-center">
-                              <span className="text-sm font-medium p-0.5 text-[#979797] mobile:text-base">
-                                {`${month} 월`}
-                              </span>
-                              <table className="w-full h-full border-separate border-spacing-0 table-fixed border border-blue mt-3 rounded-lg pr-3 py-3">
-                                <thead className="block">
-                                  <tr className="flex justify-center items-center">
-                                    <th className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm">
-                                      Time
-                                    </th>
-                                    {value
-                                      .slice(i * 5, i * 5 + 5)
-                                      .map((date, index) => (
-                                        <th
-                                          key={index}
-                                          className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm"
+                  return value.length > 5 ? (
+                    <Fragment key={idx2 + idx1 + 1}>
+                      {data?.startTime &&
+                        data?.endTime &&
+                        Array.from(
+                          { length: Math.ceil(value.length / 5) },
+                          (_, i) => (
+                            <CarouselItem key={`${idx2}-${i}`}>
+                              <div className="flex flex-col w-full h-full justify-center items-center">
+                                <span className="text-sm font-medium p-0.5 text-[#979797] mobile:text-base">
+                                  {`${year}년 ${month}월`}
+                                </span>
+                                <table className="w-full h-full border-separate border-spacing-0 table-fixed border border-blue mt-3 rounded-lg pr-3 py-3">
+                                  <thead className="block">
+                                    <tr className="flex justify-center items-center">
+                                      <th className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm">
+                                        Time
+                                      </th>
+                                      {value
+                                        .slice(i * 5, i * 5 + 5)
+                                        .map((date, index) => (
+                                          <th
+                                            key={index}
+                                            className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm"
+                                          >
+                                            {`${date}일`}
+                                          </th>
+                                        ))}
+                                    </tr>
+                                  </thead>
+                                  <tbody
+                                    className="block max-h-80 w-full overflow-y-scroll mobile:max-h-96"
+                                    onMouseUp={handleMouseUp}
+                                  >
+                                    {Array.from(
+                                      {
+                                        length:
+                                          parseInt(data.endTime) -
+                                          parseInt(data.startTime) +
+                                          1,
+                                      },
+                                      (_, hourIndex) => (
+                                        <tr
+                                          key={hourIndex}
+                                          className="border-collapse w-full flex justify-center items-center"
                                         >
-                                          {`${date}일`}
-                                        </th>
-                                      ))}
-                                  </tr>
-                                </thead>
-                                <tbody
-                                  className="block max-h-80 w-full overflow-y-scroll mobile:max-h-96"
-                                  onMouseUp={handleMouseUp}
-                                >
-                                  {Array.from(
-                                    {
-                                      length:
-                                        parseInt(data.endTime) -
-                                        parseInt(data.startTime) +
-                                        1,
-                                    },
-                                    (_, hourIndex) => (
-                                      <tr
-                                        key={hourIndex}
-                                        className="border-collapse w-full flex justify-center items-center"
-                                      >
-                                        <td className="py-2 w-12 text-center text-xs text-[#979797] font-base mobile:text-sm">
-                                          {parseInt(data.startTime) + hourIndex}
-                                        </td>
-                                        {value
-                                          .slice(i * 5, i * 5 + 5)
-                                          .map((date, dateIndex) => (
-                                            <td
-                                              key={dateIndex}
-                                              className="p-0"
-                                              onMouseDown={() =>
-                                                handleMouseDown(
-                                                  date,
-                                                  parseInt(data.startTime) +
-                                                    hourIndex
-                                                )
-                                              }
-                                              onMouseEnter={() =>
-                                                handleMouseEnter(
-                                                  date,
-                                                  parseInt(data.startTime) +
-                                                    hourIndex
-                                                )
-                                              }
-                                            >
-                                              <div
-                                                className={`flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center ${
-                                                  isBlockSelected(
-                                                    date,
+                                          <td className="py-2 w-12 text-center text-xs text-[#979797] font-base mobile:text-sm">
+                                            {parseInt(data.startTime) +
+                                              hourIndex}
+                                          </td>
+                                          {value
+                                            .slice(i * 5, i * 5 + 5)
+                                            .map((date, dateIndex) => (
+                                              <td
+                                                key={dateIndex}
+                                                className="p-0"
+                                                onMouseDown={() =>
+                                                  handleMouseDown(
+                                                    `${year}-${month}-${date}`,
                                                     parseInt(data.startTime) +
                                                       hourIndex
                                                   )
-                                                    ? "bg-blue"
-                                                    : "bg-white"
-                                                }`}
-                                              />
-                                            </td>
-                                          ))}
-                                      </tr>
-                                    )
-                                  )}
-                                </tbody>
-                              </table>
-                            </div>
-                          </CarouselItem>
-                        )
-                      )}
-                  </Fragment>
-                ) : (
-                  data?.startTime && data?.endTime && (
-                    <CarouselItem key={index}>
-                      <div className="flex flex-col w-full h-full justify-center items-center">
-                        <span className="text-sm font-medium p-0.5 text-[#979797] mobile:text-base">
-                          {`${month} 월`}
-                        </span>
-                        <table className="w-full h-full border-separate border-spacing-0 table-fixed border border-blue mt-3 rounded-lg pr-3 py-3">
-                          <thead className="block">
-                            <tr className="flex justify-center items-center">
-                              <th className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm">
-                                Time
-                              </th>
-                              {value.map((date, index) => (
-                                <th
-                                  key={index}
-                                  className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm"
-                                >
-                                  {`${date}일`}
+                                                }
+                                                onMouseEnter={() =>
+                                                  handleMouseEnter(
+                                                    `${year}-${month}-${date}`,
+                                                    parseInt(data.startTime) +
+                                                      hourIndex
+                                                  )
+                                                }
+                                              >
+                                                <div
+                                                  className={`flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center ${
+                                                    isBlockSelected(
+                                                      `${year}-${month}-${date}`,
+                                                      parseInt(data.startTime) +
+                                                        hourIndex
+                                                    )
+                                                      ? "bg-blue"
+                                                      : "bg-white"
+                                                  }`}
+                                                />
+                                              </td>
+                                            ))}
+                                        </tr>
+                                      )
+                                    )}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </CarouselItem>
+                          )
+                        )}
+                    </Fragment>
+                  ) : (
+                    data?.startTime && data?.endTime && (
+                      <CarouselItem key={idx1}>
+                        <div className="flex flex-col w-full h-full justify-center items-center">
+                          <span className="text-sm font-medium p-0.5 text-[#979797] mobile:text-base">
+                            {`${year}년 ${month}월`}
+                          </span>
+                          <table className="w-full h-full border-separate border-spacing-0 table-fixed border border-blue mt-3 rounded-lg pr-3 py-3">
+                            <thead className="block">
+                              <tr className="flex justify-center items-center">
+                                <th className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm">
+                                  Time
                                 </th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody
-                            className="block max-h-80 w-full overflow-y-scroll mobile:max-h-96"
-                            onMouseUp={handleMouseUp}
-                          >
-                            {Array.from(
-                              {
-                                length:
-                                  parseInt(data.endTime) -
-                                  parseInt(data.startTime) +
-                                  1,
-                              },
-                              (_, hourIndex) => (
-                                <tr
-                                  key={hourIndex}
-                                  className="border-collapse w-full flex justify-center items-center"
-                                >
-                                  <td className="py-2 w-12 text-center text-xs text-[#979797] font-base mobile:text-sm">
-                                    {parseInt(data.startTime) + hourIndex}
-                                  </td>
-                                  {value.map((date, dateIndex) => (
-                                    <td
-                                      key={dateIndex}
-                                      className="p-0"
-                                      onMouseDown={() =>
-                                        handleMouseDown(
-                                          date,
-                                          parseInt(data.startTime) + hourIndex
-                                        )
-                                      }
-                                      onMouseEnter={() =>
-                                        handleMouseEnter(
-                                          date,
-                                          parseInt(data.startTime) + hourIndex
-                                        )
-                                      }
-                                    >
-                                      <div
-                                        className={`flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center ${
-                                          isBlockSelected(
-                                            date,
+                                {value.map((date, index) => (
+                                  <th
+                                    key={index}
+                                    className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm"
+                                  >
+                                    {`${date}일`}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody
+                              className="block max-h-80 w-full overflow-y-scroll mobile:max-h-96"
+                              onMouseUp={handleMouseUp}
+                            >
+                              {Array.from(
+                                {
+                                  length:
+                                    parseInt(data.endTime) -
+                                    parseInt(data.startTime) +
+                                    1,
+                                },
+                                (_, hourIndex) => (
+                                  <tr
+                                    key={hourIndex}
+                                    className="border-collapse w-full flex justify-center items-center"
+                                  >
+                                    <td className="py-2 w-12 text-center text-xs text-[#979797] font-base mobile:text-sm">
+                                      {parseInt(data.startTime) + hourIndex}
+                                    </td>
+                                    {value.map((date, dateIndex) => (
+                                      <td
+                                        key={dateIndex}
+                                        className="p-0"
+                                        onMouseDown={() =>
+                                          handleMouseDown(
+                                            `${year}-${month}-${date}`,
                                             parseInt(data.startTime) + hourIndex
                                           )
-                                            ? "bg-blue"
-                                            : "bg-white"
-                                        }`}
-                                      />
-                                    </td>
-                                  ))}
-                                </tr>
-                              )
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                    </CarouselItem>
-                  )
-                );
+                                        }
+                                        onMouseEnter={() =>
+                                          handleMouseEnter(
+                                            `${year}-${month}-${date}`,
+                                            parseInt(data.startTime) + hourIndex
+                                          )
+                                        }
+                                      >
+                                        <div
+                                          className={`flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center ${
+                                            isBlockSelected(
+                                              `${year}-${month}-${date}`,
+                                              parseInt(data.startTime) +
+                                                hourIndex
+                                            )
+                                              ? "bg-blue"
+                                              : "bg-white"
+                                          }`}
+                                        />
+                                      </td>
+                                    ))}
+                                  </tr>
+                                )
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </CarouselItem>
+                    )
+                  );
+                });
               })}
           </CarouselContent>
         </Carousel>
@@ -296,7 +304,10 @@ export default function Page() {
           >
             취소
           </button>
-          <button className="w-full text-sm px-3 py-2 bg-blue text-white rounded-lg mobile:text-base">
+          <button
+            className="w-full text-sm px-3 py-2 bg-blue text-white rounded-lg mobile:text-base"
+            onClick={handleSaveTime}
+          >
             저장
           </button>
         </div>
