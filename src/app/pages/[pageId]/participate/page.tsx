@@ -20,10 +20,17 @@ interface Data {
   endTime: string;
 }
 
+interface SelectedBlock {
+  date: number;
+  hour: number;
+}
+
 export default function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [data, setData] = useState<Data>();
+  const [selectedBlocks, setSelectedBlocks] = useState<SelectedBlock[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     const obj: Data = {
@@ -49,6 +56,35 @@ export default function Page() {
 
   const handleClickBack = () => {
     router.back();
+  };
+
+  const handleMouseDown = (date: number, hour: number) => {
+    setIsDragging(true);
+    handleBlockSelection(date, hour);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseEnter = (date: number, hour: number) => {
+    if (isDragging) {
+      handleBlockSelection(date, hour);
+    }
+  };
+
+  const handleBlockSelection = (date: number, hour: number) => {
+    setSelectedBlocks((prev) => {
+      return isBlockSelected(date, hour)
+        ? prev.filter((block) => block.date !== date || block.hour !== hour)
+        : [...prev, { date, hour }];
+    });
+  };
+
+  const isBlockSelected = (date: number, hour: number) => {
+    return selectedBlocks.some(
+      (block) => block.date === date && block.hour === hour
+    );
   };
 
   return (
@@ -104,7 +140,10 @@ export default function Page() {
                                       ))}
                                   </tr>
                                 </thead>
-                                <tbody className="block max-h-80 w-full overflow-y-scroll mobile:max-h-96">
+                                <tbody
+                                  className="block max-h-80 w-full overflow-y-scroll mobile:max-h-96"
+                                  onMouseUp={handleMouseUp}
+                                >
                                   {Array.from(
                                     {
                                       length:
@@ -122,9 +161,36 @@ export default function Page() {
                                         </td>
                                         {value
                                           .slice(i * 5, i * 5 + 5)
-                                          .map((_, dateIndex) => (
-                                            <td key={dateIndex} className="p-0">
-                                              <div className="flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center" />
+                                          .map((date, dateIndex) => (
+                                            <td
+                                              key={dateIndex}
+                                              className="p-0"
+                                              onMouseDown={() =>
+                                                handleMouseDown(
+                                                  date,
+                                                  parseInt(data.startTime) +
+                                                    hourIndex
+                                                )
+                                              }
+                                              onMouseEnter={() =>
+                                                handleMouseEnter(
+                                                  date,
+                                                  parseInt(data.startTime) +
+                                                    hourIndex
+                                                )
+                                              }
+                                            >
+                                              <div
+                                                className={`flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center ${
+                                                  isBlockSelected(
+                                                    date,
+                                                    parseInt(data.startTime) +
+                                                      hourIndex
+                                                  )
+                                                    ? "bg-blue"
+                                                    : "bg-white"
+                                                }`}
+                                              />
                                             </td>
                                           ))}
                                       </tr>
@@ -160,7 +226,10 @@ export default function Page() {
                               ))}
                             </tr>
                           </thead>
-                          <tbody className="block max-h-80 w-full overflow-y-scroll mobile:max-h-96">
+                          <tbody
+                            className="block max-h-80 w-full overflow-y-scroll mobile:max-h-96"
+                            onMouseUp={handleMouseUp}
+                          >
                             {Array.from(
                               {
                                 length:
@@ -176,9 +245,33 @@ export default function Page() {
                                   <td className="py-2 w-12 text-center text-xs text-[#979797] font-base mobile:text-sm">
                                     {parseInt(data.startTime) + hourIndex}
                                   </td>
-                                  {value.map((_, dateIndex) => (
-                                    <td key={dateIndex} className="p-0">
-                                      <div className="flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center" />
+                                  {value.map((date, dateIndex) => (
+                                    <td
+                                      key={dateIndex}
+                                      className="p-0"
+                                      onMouseDown={() =>
+                                        handleMouseDown(
+                                          date,
+                                          parseInt(data.startTime) + hourIndex
+                                        )
+                                      }
+                                      onMouseEnter={() =>
+                                        handleMouseEnter(
+                                          date,
+                                          parseInt(data.startTime) + hourIndex
+                                        )
+                                      }
+                                    >
+                                      <div
+                                        className={`flex mx-auto w-12 aspect-[4/3] border border-[#D9D9D9] justify-center items-center ${
+                                          isBlockSelected(
+                                            date,
+                                            parseInt(data.startTime) + hourIndex
+                                          )
+                                            ? "bg-blue"
+                                            : "bg-white"
+                                        }`}
+                                      />
                                     </td>
                                   ))}
                                 </tr>
