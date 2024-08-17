@@ -8,7 +8,7 @@ import { DateFormatter } from "react-day-picker";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SelectContents } from "@/components";
 import { supabase } from "@/apis";
-import Logo from "@/assets/logo.svg";
+import { LogoIcon } from "@/assets";
 
 interface Data {
   title: string;
@@ -85,7 +85,7 @@ export default function Home() {
   return (
     <main className="flex w-full h-full flex-col items-center overflow-y-scroll justify-around">
       <i className="flex justify-center items-center w-full grow-0">
-        <Logo />
+        <LogoIcon />
       </i>
       <div className="flex flex-col gap-6 w-screen items-center xs:w-full">
         <input
