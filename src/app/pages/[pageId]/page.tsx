@@ -46,7 +46,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
 
   return (
     <main className="h-dvh flex flex-col">
-      <Tabs defaultValue="account" className="w-full p-0 overflow-y-scroll">
+      <Tabs defaultValue="account" className="w-full p-0">
         <TabsList className="flex mt-6 w-screen px-0 py-0 bg-transparent">
           <div className="w-full h-full flex relative">
             <TabsTrigger

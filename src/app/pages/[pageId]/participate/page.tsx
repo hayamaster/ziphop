@@ -98,12 +98,12 @@ export default function Page() {
 
   return (
     <>
-      <div className="w-full h-full flex flex-col">
+      <div className="h-dvh flex flex-col">
         <ArrowIcon
-          className="w-6 h-6 mt-4 mb-3 shrink-0 mobile:w-8 mobile:h-8 mobile:mt-6 mobile:mb-5"
+          className="w-4 h-4 mt-4 mb-2 shrink-0 mobile:w-6 mobile:h-6 mobile:mt-5 mobile:mb-3"
           onClick={handleClickBack}
         />
-        <header className="py-4">
+        <header className="py-2 mobile:py-3">
           <h1 className="text-lg text-blue font-semibold mobile:text-xl">
             {data?.title}
           </h1>
@@ -111,8 +111,8 @@ export default function Page() {
             가능한 시간을 선택해주세요.
           </p>
         </header>
-        <div className="flex flex-col h-full w-full overflow-y-scroll gap-3">
-          <Carousel className="w-full h-full relative mt-4">
+        <div className="flex flex-col h-full w-full gap-4">
+          <Carousel className="w-full h-full relative mt-4 mb-2">
             <CarouselPrevious className="absolute top-4 left-1/5 z-30" />
             <CarouselNext className="absolute top-4 right-0 z-30" />
             <CarouselContent key={`${data?.endTime} + '10'`}>
@@ -122,18 +122,20 @@ export default function Page() {
                     value = value.sort((a, b) => a - b);
 
                     return value.length > 5 ? (
-                      <Fragment key={idx2 + idx1 + 1}>
+                      <Fragment key={`${year}-${month}-${idx2}`}>
                         {data?.startTime &&
                           data?.endTime &&
                           Array.from(
                             { length: Math.ceil(value.length / 5) },
                             (_, i) => (
-                              <CarouselItem key={`${idx2}-${i}`}>
+                              <CarouselItem
+                                key={`${year}-${month}-${idx2}-${i}`}
+                              >
                                 <div className="flex flex-col w-full h-full justify-center items-center">
                                   <span className="text-sm font-medium p-0.5 text-[#979797] mobile:text-base">
                                     {`${year}년 ${month}월`}
                                   </span>
-                                  <table className="w-full h-full border-separate border-spacing-0 table-fixed border border-blue mt-3 rounded-lg pr-3 py-3">
+                                  <table className="w-full h-full border-separate table-fixed border border-blue mt-3 rounded-lg pr-3 py-2">
                                     <thead className="block">
                                       <tr className="flex justify-center items-center">
                                         <th className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm">
@@ -143,7 +145,7 @@ export default function Page() {
                                           .slice(i * 5, i * 5 + 5)
                                           .map((date, index) => (
                                             <th
-                                              key={index}
+                                              key={`${year}-${month}-${date}-${index}`}
                                               className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm"
                                             >
                                               {`${date}일`}
@@ -152,7 +154,7 @@ export default function Page() {
                                       </tr>
                                     </thead>
                                     <tbody
-                                      className="block max-h-80 w-full overflow-y-scroll mobile:max-h-96"
+                                      className="block max-h-72 w-full overflow-y-scroll mobile:max-h-80"
                                       onMouseUp={handleMouseUp}
                                     >
                                       {Array.from(
@@ -164,7 +166,7 @@ export default function Page() {
                                         },
                                         (_, hourIndex) => (
                                           <tr
-                                            key={hourIndex}
+                                            key={`${year}-${month}-${i}-${hourIndex}`}
                                             className="border-collapse w-full flex justify-center items-center"
                                           >
                                             <td className="py-2 w-12 text-center text-xs text-[#979797] font-base mobile:text-sm">
@@ -175,7 +177,7 @@ export default function Page() {
                                               .slice(i * 5, i * 5 + 5)
                                               .map((date, dateIndex) => (
                                                 <td
-                                                  key={dateIndex}
+                                                  key={`${year}-${month}-${date}-${dateIndex}-${hourIndex}`}
                                                   className="p-0"
                                                   onMouseDown={() =>
                                                     handleMouseDown(
@@ -218,7 +220,7 @@ export default function Page() {
                       </Fragment>
                     ) : (
                       data?.startTime && data?.endTime && (
-                        <CarouselItem key={idx1}>
+                        <CarouselItem key={`${year}-${month}-${idx1}`}>
                           <div className="flex flex-col w-full h-full justify-center items-center">
                             <span className="text-sm font-medium p-0.5 text-[#979797] mobile:text-base">
                               {`${year}년 ${month}월`}
@@ -231,7 +233,7 @@ export default function Page() {
                                   </th>
                                   {value.map((date, index) => (
                                     <th
-                                      key={index}
+                                      key={`${year}-${month}-${date}-${index}`}
                                       className="py-2 w-12 text-xs text-[#979797] font-normal mobile:text-sm"
                                     >
                                       {`${date}일`}
@@ -240,7 +242,7 @@ export default function Page() {
                                 </tr>
                               </thead>
                               <tbody
-                                className="block max-h-80 w-full overflow-y-scroll mobile:max-h-96"
+                                className="block max-h-72 w-full overflow-y-scroll mobile:max-h-80"
                                 onMouseUp={handleMouseUp}
                               >
                                 {Array.from(
@@ -252,7 +254,7 @@ export default function Page() {
                                   },
                                   (_, hourIndex) => (
                                     <tr
-                                      key={hourIndex}
+                                      key={`${year}-${month}-${idx1}-${hourIndex}`}
                                       className="border-collapse w-full flex justify-center items-center"
                                     >
                                       <td className="py-2 w-12 text-center text-xs text-[#979797] font-base mobile:text-sm">
@@ -260,7 +262,7 @@ export default function Page() {
                                       </td>
                                       {value.map((date, dateIndex) => (
                                         <td
-                                          key={dateIndex}
+                                          key={`${year}-${month}-${date}-${dateIndex}-${hourIndex}`}
                                           className="p-0"
                                           onMouseDown={() =>
                                             handleMouseDown(
@@ -306,7 +308,7 @@ export default function Page() {
           <button className="w-full px-3 py-1.5 border border-blue rounded-lg bg-white text-blue text-sm">
             겹치는 시간 확인하기
           </button>
-          <div className="flex w-full gap-3 py-4 mobile:py-6">
+          <div className="flex w-full gap-3 py-2 mobile:py-3 tablet:py-6">
             <button
               className="w-full text-sm px-3 py-2 bg-[#5A5A5A] text-white rounded-lg mobile:text-base"
               onClick={handleClickBack}
@@ -322,7 +324,9 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {showModal && <Modal setShowModal={setShowModal} />}
+      {showModal && (
+        <Modal setShowModal={setShowModal} selectedDays={selectedBlocks} />
+      )}
     </>
   );
 }

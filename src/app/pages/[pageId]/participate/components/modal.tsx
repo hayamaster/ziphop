@@ -1,14 +1,24 @@
 "use client";
 import { CloseIcon } from "@/assets";
 import { Dispatch, SetStateAction, ChangeEvent, useState } from "react";
+import { usePathname } from "next/navigation";
+
+interface SelectedDays {
+  date: string;
+  hour: number;
+}
 
 interface ModalPorps {
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  selectedDays: SelectedDays[];
 }
 
-const Modal = ({ setShowModal }: ModalPorps) => {
+const Modal = ({ setShowModal, selectedDays }: ModalPorps) => {
+  const pageId = usePathname().split("/")[2];
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
+
+  console.log(pageId);
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -28,7 +38,7 @@ const Modal = ({ setShowModal }: ModalPorps) => {
         <CloseIcon className="w-5 h-5" onClick={handleCloseModal} />
         <div className="flex flex-col py-2 gap-3">
           <input
-            className={`w-full text-center text-xs border-2 px-4 py-2 rounded-lg mobile:text-sm focus:border-blue focus:outline-none ${
+            className={`w-full text-center text-xs border-2 px-4 py-2 rounded-xl mobile:text-sm focus:border-blue focus:outline-none ${
               nickname
                 ? "border-blue bg-[#ECF9FF] text-blue"
                 : "border-[#A9A9A9] text-[#A9A9A9]"
@@ -37,7 +47,7 @@ const Modal = ({ setShowModal }: ModalPorps) => {
             onChange={handleSetNickname}
           />
           <input
-            className={`w-full text-center text-xs border-2 px-4 py-2 rounded-lg mobile:text-sm focus:border-blue focus:outline-none ${
+            className={`w-full text-center text-xs border-2 px-4 py-2 rounded-xl mobile:text-sm focus:border-blue focus:outline-none ${
               password
                 ? "border-blue bg-[#ECF9FF] text-blue"
                 : "border-[#A9A9A9] text-[#A9A9A9]"
@@ -49,7 +59,9 @@ const Modal = ({ setShowModal }: ModalPorps) => {
         <button
           disabled={!nickname || !password}
           className={`w-full px-4 py-2 text-sm mobile:text-base rounded-lg ${
-            nickname && password ? "bg-blue text-white" : "cursor-not-allowed text-[#8A8A8A] bg-[#F0F0F0]"
+            nickname && password
+              ? "bg-blue text-white"
+              : "cursor-not-allowed text-[#8A8A8A] bg-[#F0F0F0]"
           }`}
         >
           <span>완료</span>
