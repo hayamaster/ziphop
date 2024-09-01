@@ -1,7 +1,8 @@
 "use client";
 import { CloseIcon } from "@/assets";
 import { Dispatch, SetStateAction, ChangeEvent, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { usePostSelectedDays } from "@/apis/hooks";
 
 interface SelectedDays {
   date: string;
@@ -17,8 +18,8 @@ const Modal = ({ setShowModal, selectedDays }: ModalPorps) => {
   const pageId = usePathname().split("/")[2];
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
-
-  console.log(pageId);
+  const router = useRouter();
+  const { mutate: postSelectedDays, isPending } = usePostSelectedDays();
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -30,6 +31,25 @@ const Modal = ({ setShowModal, selectedDays }: ModalPorps) => {
 
   const handleSetPassword = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    postSelectedDays(
+      {
+        pageId,
+        selectedDays,
+        nickname,
+        password,
+      },
+      {
+        onSuccess: () => {
+          router.push(`/pages/${pageId}`);
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      }
+    );
   };
 
   return (
@@ -57,7 +77,8 @@ const Modal = ({ setShowModal, selectedDays }: ModalPorps) => {
           />
         </div>
         <button
-          disabled={!nickname || !password}
+          disabled={!nickname || !password || isPending}
+          onClick={handleSubmit}
           className={`w-full px-4 py-2 text-sm mobile:text-base rounded-lg ${
             nickname && password
               ? "bg-blue text-white"
