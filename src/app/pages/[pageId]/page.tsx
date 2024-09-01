@@ -69,7 +69,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
               <h1 className="text-xl text-blue font-semibold">{data?.title}</h1>
               <ShareButton />
             </div>
-            <Carousel className="w-full h-full max-w-xs relative mt-4">
+            <Carousel className="w-full h-full relative mt-4">
               <CarouselPrevious className="absolute top-4 left-1/5 z-50" />
               <CarouselNext className="absolute top-4 right-0 z-50" />
               <CarouselContent>

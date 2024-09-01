@@ -19,7 +19,7 @@ export default function RootLayout({
     <ReactQueryClientProvider>
       <html lang="en" className="w-full h-dvh overflow-hidden">
         <body
-          className={`${inter.className} w-full h-full flex items-center justify-center px-10 tablet:mx-auto tablet:max-w-[400px] overflow-y-scroll overflow-x-hidden`}
+          className={`${inter.className} w-full h-full flex items-center justify-center px-10 tablet:mx-auto  overflow-y-scroll overflow-x-hidden`}
         >
           {children}
         </body>

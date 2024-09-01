@@ -98,20 +98,22 @@ export default function Page() {
 
   return (
     <>
-      <div className="h-dvh flex flex-col">
-        <ArrowIcon
-          className="w-4 h-4 mt-4 mb-2 shrink-0 mobile:w-6 mobile:h-6 mobile:mt-5 mobile:mb-3"
-          onClick={handleClickBack}
-        />
-        <header className="py-2 mobile:py-3">
-          <h1 className="text-lg text-blue font-semibold mobile:text-xl">
-            {data?.title}
-          </h1>
-          <p className="text-lg text-[#979797] font-semibold mobile:text-xl">
-            가능한 시간을 선택해주세요.
-          </p>
-        </header>
-        <div className="flex flex-col h-full w-full gap-4">
+      <div className="h-dvh flex flex-col justify-center">
+        <div className="flex w-full items-center ">
+          <ArrowIcon
+            className="w-4 h-4 mr-4 shrink-0 mobile:w-6 mobile:h-6 mobile:mr-6"
+            onClick={handleClickBack}
+          />
+          <header className="pt-4 pb-1 mobile:pt-5">
+            <h1 className="text-lg text-blue font-semibold mobile:text-xl">
+              {data?.title}
+            </h1>
+            <p className="text-base text-[#979797] font-semibold mobile:text-lg">
+              가능한 시간을 선택해주세요.
+            </p>
+          </header>
+        </div>
+        <div className="flex flex-col w-full gap-3">
           <Carousel className="w-full h-full relative mt-4 mb-2">
             <CarouselPrevious className="absolute top-4 left-1/5 z-30" />
             <CarouselNext className="absolute top-4 right-0 z-30" />
@@ -154,7 +156,7 @@ export default function Page() {
                                       </tr>
                                     </thead>
                                     <tbody
-                                      className="block max-h-72 w-full overflow-y-scroll mobile:max-h-80"
+                                      className="block max-h-72 w-full overflow-y-scroll mobile:max-h-80 tablet:max-h-96"
                                       onMouseUp={handleMouseUp}
                                     >
                                       {Array.from(
@@ -242,7 +244,7 @@ export default function Page() {
                                 </tr>
                               </thead>
                               <tbody
-                                className="block max-h-72 w-full overflow-y-scroll mobile:max-h-80"
+                                className="block max-h-72 w-full overflow-y-scroll mobile:max-h-80 tablet:max-h-96"
                                 onMouseUp={handleMouseUp}
                               >
                                 {Array.from(
