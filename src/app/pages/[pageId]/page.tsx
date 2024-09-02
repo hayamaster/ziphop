@@ -9,12 +9,15 @@ import type { MainEventData } from "@/types";
 async function getData(pageId: string): Promise<MainEventData | null> {
   const { data, error } = await supabase
     .from("pages")
-    .select(`*, user_selection(*)`)
+    .select(`*, user_selection(nickname, uniqueId, selectedDays)`)
     .eq("pageId", pageId)
     .single();
 
   if (error) {
     console.log("Failed to fetch data");
+  } else {
+    data.userSelections = data.user_selection;
+    delete data.user_selection;
   }
 
   return data;

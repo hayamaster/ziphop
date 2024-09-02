@@ -18,6 +18,10 @@ interface TotalEventProps {
 const IMSY_PARTICIPANT = ["김주하", "한지섭", "강민재", "하주김", "후후후"];
 
 const TotalEvent = ({ data, years }: TotalEventProps) => {
+  data.userSelections.forEach((select) => {
+    console.log(select);
+  });
+
   return (
     <>
       <div className="w-full flex flex-col justify-center items-center gap-4">

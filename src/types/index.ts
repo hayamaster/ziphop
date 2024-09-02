@@ -4,8 +4,6 @@ export interface SelectedDay {
 }
 
 export interface UserSelection {
-  pageId: string;
-  created_at: string;
   selectedDays: SelectedDay[];
   nickname: string;
   uniqueId: string;
@@ -18,7 +16,7 @@ export interface MainEventData {
   startTime: string;
   endTime: string;
   pageId: string;
-  userSelection: UserSelection[];
+  userSelections: UserSelection[];
 }
 
 export interface Years {
