@@ -11,7 +11,7 @@ import {
 import { groupDays } from "@/utils";
 import { Fragment } from "react";
 import { ArrowIcon } from "@/assets";
-import { Modal } from "./components";
+import { SignUpModal } from "@/components";
 
 interface Data {
   title: string;
@@ -327,7 +327,10 @@ export default function Page() {
         </div>
       </div>
       {showModal && (
-        <Modal setShowModal={setShowModal} selectedDays={selectedBlocks} />
+        <SignUpModal
+          setShowModal={setShowModal}
+          selectedDays={selectedBlocks}
+        />
       )}
     </>
   );

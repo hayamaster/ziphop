@@ -9,12 +9,12 @@ interface SelectedDays {
   hour: number;
 }
 
-interface ModalPorps {
+interface SignUpModalPorps {
   setShowModal: Dispatch<SetStateAction<boolean>>;
   selectedDays: SelectedDays[];
 }
 
-const Modal = ({ setShowModal, selectedDays }: ModalPorps) => {
+const SignUpModal = ({ setShowModal, selectedDays }: SignUpModalPorps) => {
   const pageId = usePathname().split("/")[2];
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
@@ -92,4 +92,4 @@ const Modal = ({ setShowModal, selectedDays }: ModalPorps) => {
   );
 };
 
-export default Modal;
+export default SignUpModal;
