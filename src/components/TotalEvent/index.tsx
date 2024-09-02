@@ -8,24 +8,10 @@ import {
 } from "@/components/ui/carousel";
 import Link from "next/link";
 import { Fragment } from "react";
-
-interface Data {
-  title: string;
-  created_at: string;
-  days: string[];
-  startTime: string;
-  endTime: string;
-  pageId: string;
-}
-
-interface Years {
-  [key: string]: {
-    [key: string]: number[];
-  };
-}
+import type { MainEventData, Years } from "@/types";
 
 interface TotalEventProps {
-  data: Data;
+  data: MainEventData;
   years: Years;
 }
 

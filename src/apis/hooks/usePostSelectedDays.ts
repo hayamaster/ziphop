@@ -1,14 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/apis";
-
-interface SelectedDays {
-  date: string;
-  hour: number;
-}
+import type { SelectedDay } from "@/types";
 
 interface Data {
   pageId: string;
-  selectedDays: SelectedDays[];
+  selectedDays: SelectedDay[];
   nickname: string;
   password: string;
 }

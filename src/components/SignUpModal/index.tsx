@@ -3,15 +3,11 @@ import { CloseIcon } from "@/assets";
 import { Dispatch, SetStateAction, ChangeEvent, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { usePostSelectedDays } from "@/apis/hooks";
-
-interface SelectedDays {
-  date: string;
-  hour: number;
-}
+import type { SelectedDay } from "@/types";
 
 interface SignUpModalPorps {
   setShowModal: Dispatch<SetStateAction<boolean>>;
-  selectedDays: SelectedDays[];
+  selectedDays: SelectedDay[];
 }
 
 const SignUpModal = ({ setShowModal, selectedDays }: SignUpModalPorps) => {

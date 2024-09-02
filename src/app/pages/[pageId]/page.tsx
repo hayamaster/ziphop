@@ -2,22 +2,14 @@ import { supabase } from "@/apis";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { groupDays } from "@/utils";
 import { ShareButton, TotalEvent } from "@/components";
-
-interface Data {
-  title: string;
-  created_at: string;
-  days: string[];
-  startTime: string;
-  endTime: string;
-  pageId: string;
-}
+import type { MainEventData } from "@/types";
 
 // const testId = "506f47d7-cb0e-4d9b-931d-63fbebcd5533";
 
-async function getData(pageId: string): Promise<Data | null> {
+async function getData(pageId: string): Promise<MainEventData | null> {
   const { data, error } = await supabase
     .from("pages")
-    .select("*")
+    .select(`*, user_selection(*)`)
     .eq("pageId", pageId)
     .single();
 
@@ -32,7 +24,7 @@ export default async function Page({ params }: { params: { pageId: string } }) {
   const data = await getData(params.pageId);
   const years = groupDays(data?.days || []);
 
-  console.log(data, years);
+  console.log(data);
 
   return (
     <main className="h-dvh flex flex-col">

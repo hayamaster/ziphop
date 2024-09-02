@@ -12,6 +12,7 @@ import { groupDays } from "@/utils";
 import { Fragment } from "react";
 import { ArrowIcon } from "@/assets";
 import { SignUpModal } from "@/components";
+import type { SelectedDay } from "@/types";
 
 interface Data {
   title: string;
@@ -21,16 +22,11 @@ interface Data {
   endTime: string;
 }
 
-interface SelectedBlock {
-  date: string;
-  hour: number;
-}
-
 export default function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [data, setData] = useState<Data>();
-  const [selectedBlocks, setSelectedBlocks] = useState<SelectedBlock[]>([]);
+  const [selectedBlocks, setSelectedBlocks] = useState<SelectedDay[]>([]);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
 
